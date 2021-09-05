@@ -1,14 +1,13 @@
 {
-  "name": "PluginExample",
-  "version": "1.0",
+  "name": "TargetStrafe",
+  "version": "1.0.0",
   "authors": [
-    "me",
-    "you"
+    "KMatias"
   ],
-  "description": "does absolutely nothing",
+  "description": "Automatically strafes around the current target in a circle",
   "url": "",
   "min_api_version": "2.05.01",
   "required_plugins": [],
-  "main_class": "PluginExample",
+  "main_class": "me.kmatias.targetstrafe.Main",
   "hot_reload": true
 }

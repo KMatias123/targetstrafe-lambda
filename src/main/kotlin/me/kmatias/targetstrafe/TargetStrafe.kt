@@ -8,6 +8,7 @@ import com.lambda.client.module.modules.combat.KillAura
 import com.lambda.client.plugin.api.PluginModule
 import com.lambda.client.util.color.ColorHolder
 import com.lambda.client.util.math.RotationUtils.getRotationToEntity
+import com.lambda.client.util.threads.runSafe
 import com.lambda.client.util.threads.safeListener
 import com.lambda.event.listener.listener
 import net.minecraft.client.renderer.BufferBuilder
@@ -61,20 +62,18 @@ object TargetStrafe : PluginModule(
                     currentTargetVec = CombatManager.target?.positionVector!!.add(mc.player.lookVec)
                 }
 
-                try {
+                runSafe {
                     strafing = true
-                } catch (e: ConcurrentModificationException) {
                 }
             } else {
-                try {
+                runSafe {
                     strafing = false
-                } catch (e: ConcurrentModificationException) {
                 }
             }
         }
 
         listener<RenderWorldEvent> {
-            try {
+            runSafe {
                 if (strafing && renderCircle) {
                     if (currentTargetVec == null) {
                         return@listener
@@ -85,7 +84,6 @@ object TargetStrafe : PluginModule(
                     drawCircle(currentTargetVec!!, currentDistance, playerDistanceColor, 360)
                     */
                 }
-            } catch (e: ConcurrentModificationException) {
             }
         }
 
@@ -104,7 +102,6 @@ object TargetStrafe : PluginModule(
 
         val distance = sqrt(disX * disX + disZ * disZ)
 
-        // todo: make it always move to the next point in the circle instead of this jittery shit
         if (distance < maxDistance) {
             if (distance > distanceSetting) {
                 rotationYaw -= turnAmount * direction
